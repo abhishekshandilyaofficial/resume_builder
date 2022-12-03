@@ -10,10 +10,11 @@ const { v4: uuidv4 } = require("uuid");
 
 // import { withRouter } from "react-router-dom";
 function GettingStarted(props) {
+    //console.log(props.document.documentReducer.skinCd);
     let history = useHistory();
     const onChange = async (skinCd) => {
         if (props.document.id) {
-            props.updateDocument(props.document, skinCd);
+            props.updateDocument(skinCd);
         }
         else {
             props.setDocument(skinCd);
@@ -32,7 +33,7 @@ function GettingStarted(props) {
                     {
                         skinCodes.map((value, index) => {
                             return (<div key={index} className="template-card rounded-border">
-                                <i className={(value == 'demo-value' ? 'selected fa fa-check' : 'hide')} ></i>
+                                <i className={(value == props.document.skinCd ? 'selected fa fa-check' : 'hide')} ></i>
                                 <img className='' src={'/images/' + value + '.svg'} />
                                 <button type="button" onClick={() => onChange(value)} className='btn-select-theme'>USE TEMPLATE</button>
                             </div>);
@@ -47,7 +48,7 @@ function GettingStarted(props) {
 }
 const mapStateToProps = (state) => {
     return {
-        document: state
+        document: state.documentReducer
     }
 }
 const mapDispatchToProps = dispatch => {
