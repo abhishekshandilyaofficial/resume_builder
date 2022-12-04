@@ -5,12 +5,12 @@ export default function documentReducer(state = initialState.document, action) {
         case actionTypes.SET_SKIN:
             return {
                 ...state,
-                document: action.document
+                ...action.document
             }
         case actionTypes.UPDATE_SKIN:
             return {
                 ...state,
-                document: action.document
+                ...action.document
             }
         default:
             return state;

@@ -7,11 +7,12 @@ import {fieldCd, skinCodes}  from '../../constants/typeCodes';
 // import { withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import ResumePreview from './resumePreview'
-// import { connect } from "react-redux";
+import { connect } from "react-redux";
+import * as actionTypes from "../../redux/actionTypes";
 
 function Contact(props) {
    let history = useHistory();
-   const [contact,setContact]= useState(props.contactSection);
+   const [contact,setContact]= useState(props.contact);
 //    useEffect(() => {
 //        if(!props.document || !props.document.id || !props.document.skinCd)
 //        {
@@ -25,14 +26,16 @@ function Contact(props) {
         setContact({...contact,[key]:val})
     }
     const onSubmit= async()=>{
+        props.addContact(contact);
+        history.push('/education');
+        
         // if(props.contactSection!=null){
         //     props.updateContact(props.document.id,contact);
         // }
         // else{
         //     props.addContact(props.document.id,contact);
         // }
-
-        history.push('/education');
+        
     }
 
 
@@ -130,6 +133,21 @@ function Contact(props) {
     );
 }
 
-
-export default Contact
-
+const mapStateToProps = (state) => {
+    return {
+        document: state.documentReducer,
+        contact:state.contactReducer
+    }
+}
+const mapDispathToProps = (dispatch) => {
+    return {
+        addContact: (contact) => {
+            dispatch({
+                type: actionTypes.ADD_CONTACT,
+                contact: contact
+            })
+        }
+    }
+}
+// connect 
+export default connect(mapStateToProps, mapDispathToProps)(Contact)

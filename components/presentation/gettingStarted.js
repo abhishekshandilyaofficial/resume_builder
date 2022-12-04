@@ -10,9 +10,10 @@ const { v4: uuidv4 } = require("uuid");
 
 // import { withRouter } from "react-router-dom";
 function GettingStarted(props) {
-    //console.log(props.document.documentReducer.skinCd);
+    console.log(13,props.document);
     let history = useHistory();
     const onChange = async (skinCd) => {
+        console.log(16,props.document.id)
         if (props.document.id) {
             props.updateDocument(skinCd);
         }
@@ -55,7 +56,7 @@ const mapDispatchToProps = dispatch => {
     return {
         setDocument: (skinCd) => {
             let id = uuidv4();
-            dispatch({ type: actionTypes.SET_SKIN, document: { skinCd, id: id } });
+            dispatch({ type: actionTypes.SET_SKIN, document: { skinCd, id } });
         },
         updateDocument: (skinCd) => {
             dispatch({ type: actionTypes.UPDATE_SKIN, document: { skinCd } })

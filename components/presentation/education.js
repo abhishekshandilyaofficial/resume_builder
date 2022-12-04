@@ -3,15 +3,17 @@ import { NavLink } from 'react-router-dom';
 import { withRouter } from "react-router-dom";
 import ResumePreview from './resumePreview'
 import {skinCodes, fieldCd} from './../../constants/typeCodes';
+import * as actionTypes from "../../redux/actionTypes";
 // import { connect } from 'react-redux'
 // import * as educationActions from '../../actions/educationActions';
 // import {bindActionCreators} from 'redux';
 import { useHistory } from "react-router-dom";
+import { connect } from "react-redux";
 
 function Education(props) {
   console.log('Education');
   let history = useHistory();
-  const [education,setEducation]= useState(props.educationSection);
+  const [education,setEducation]= useState(props.education);
 
   const onchange = (event) => {
     var key =event.target.name;
@@ -25,13 +27,16 @@ function Education(props) {
     return "";
 }
   const onSubmit = async(e) => {
+    props.addEducation(education);
+    history.push('/finalize')
+
     //console.log(this.state.educationSection);
     // if(props.educationSection!=null){
     //     props.updateEducation(props.document.id,education);
     // }else{
     //     props.addEducation(props.document.id,education);
     // }
-     history.push('/finalize')
+      
   }
 
     
@@ -90,7 +95,9 @@ function Education(props) {
             </div>
           </div>
           <div className="preview-card">
-            <ResumePreview contactSection={props.contactSection} educationSection={education} skinCd={props?.document?.skinCd}></ResumePreview>            
+            <ResumePreview contactSection={props.contact} 
+            educationSection={education} skinCd={props?.document?.skinCd}>
+            </ResumePreview>            
           </div>
         </div>
       </div>
@@ -98,9 +105,24 @@ function Education(props) {
   }
 
 
-
-  
-
-
-export default Education
+  const mapStateToProps = (state) => {
+    return {
+      document: state.documentReducer,
+      contact: state.contactReducer,
+      education: state.educationReducer
+    }
+  }
+  const mapDispathToProps = (dispatch) => {
+    return {
+      addEducation: (education) => {
+        dispatch({
+          type: actionTypes.ADD_EDUCATION,
+          education: education
+        })
+      }
+    }
+  }
+  // connect 
+  export default connect(mapStateToProps,
+    mapDispathToProps)(Education);
 
